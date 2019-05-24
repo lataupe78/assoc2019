@@ -16,4 +16,4 @@ Route::get('/', function () {
 });
 
 
-Route::get('/sections/{section}', 'Front\SectionController@show')->name('sections.show');
+Route::get('/section/{section}', 'Front\SectionController@show')->name('sections.show');

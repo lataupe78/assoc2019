@@ -17,7 +17,6 @@ class SectionTest extends TestCase
     public function home_page_show_all_main_sections()
     {
 
-
         $this->seed('SectionTableSeeder');
 
         $sections = Section::parent()->get()->pluck('title')->toArray();
@@ -28,7 +27,29 @@ class SectionTest extends TestCase
         foreach($sections as $main_section){
             $response->assertSee($main_section);
         }
+    }
 
+    /** @test */
+    public function it_show_section_content_on_when_visit()
+    {
+       //$this->withoutExceptionHandling();
+
+        $title = "Pétanque";
+        $slug = str_slug($title);
+        $section = factory(Section::class)->create([
+            'title' => $title,
+            'slug' => $slug,
+            'description' => 'contenu section pétanque'
+        ]);
+
+        //dump($section);
+
+        $response = $this->get('/section/' . $slug);
+
+            $response->assertStatus(200);
+
+             $response->assertSee($section->title);
+             $response->assertSee($section->description);
 
     }
 }
