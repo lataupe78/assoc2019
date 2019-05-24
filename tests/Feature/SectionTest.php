@@ -8,9 +8,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SectionTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function home_page_show_section_list()
     {
+
+
         $response = $this->get('/');
         $response->assertStatus(200);
     }
