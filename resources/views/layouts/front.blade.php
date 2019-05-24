@@ -24,7 +24,7 @@
 </head>
 <body>
 	<div id="app">
-		@include('layouts.front._navbar')
+		@include('layouts.front._navbar', ['list_sections' => $list_sections])
 
 		@yield('top-content')
 
