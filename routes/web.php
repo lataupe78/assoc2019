@@ -15,5 +15,27 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes(['verify' => true]);
+
+Route::get('/home', 'HomeController@index')->name('home');
+
 
 Route::get('/section/{section}', 'Front\SectionController@show')->name('sections.show');
+
+
+
+
+
+Route::group([
+	'middleware' => ['auth', 'admin'],
+	'namespace' => 'Admin',
+	'prefix' => 'admin',
+	'as' => 'admin.'
+], function()
+{
+	Route::get('/', 'DashboardController@index')->name('dashboard');
+
+});
+
+
+

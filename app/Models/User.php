@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -28,6 +28,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $dates = [
+        'email_verified_at',
+        'birth'
+    ];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -35,5 +40,28 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birth' => 'datetime:Y-m-d',
     ];
+
+
+
+    public function isAdmin(){
+        return in_array($this->role, ['admin', 'superadmin']);
+    }
+
+    public function isBasicAdmin(){
+        return $this->role == 'admin';
+    }
+
+    public function isSuperAdmin(){
+        return $this->role == 'superadmin';
+    }
+
+
+    /*
+    public function setBirthAttribute($date)
+    {
+        $this->attributes['birth'] = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+    }
+    */
 }
