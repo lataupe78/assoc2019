@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
+
+	public $guarded = [];
+
+
 	public function getRouteKeyName()
 	{
 		return 'slug';
 	}
+
+
 
 	public function scopeParent($query){
 		return $query

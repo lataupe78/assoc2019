@@ -15,15 +15,15 @@ class SectionController extends Controller
      */
     public function index()
     {
-         $sections =(auth()->user()->isSuperAdmin())
-            ?   Section::get()
-            :   auth()->user()->managed_sections()
-                ->get();
+       $sections =(auth()->user()->isSuperAdmin())
+       ?   Section::get()
+       :   auth()->user()->managed_sections()
+       ->get();
 
-        return view('admin.sections.index', [
-            'sections' => $sections
-        ]);
-    }
+       return view('admin.sections.index', [
+        'sections' => $sections
+    ]);
+   }
 
     /**
      * Show the form for creating a new resource.
@@ -77,8 +77,20 @@ class SectionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        $section = Section::where('id', $id)->firstOrFail();
+        //dd(Auth()->user()->canManage($section));
+        //dd($section);
+        $this->authorize('update', $section);
+      //if(Auth()->user()->can('update', $section)){
+
+
+        //$section->update($request->validated());
+        //dd($section);
+
+        $section->update(['title' => request('title')]);
+    //}
+    return redirect()->route('admin.sections.index');
+}
 
     /**
      * Remove the specified resource from storage.

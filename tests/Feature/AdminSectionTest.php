@@ -86,4 +86,57 @@ class AdminSectionTest extends TestCase
 		}
 
 	}
+
+	/** @test */
+	public function simple_admin_can_edit_sections_he_can_manage()
+	{
+
+		//$this->withoutExceptionHandling();
+
+		factory(Section::class, 5)->create();
+
+		$this->actingAs(factory(User::class)->create(['role' => 'admin']));
+		$user = Auth()->user();
+
+		$this->assertCount(0, $user->managed_sections()->get());
+		$managed_sections = Section::where('id' ,'>', 3)->get();
+		$user->managed_sections()->sync($managed_sections->pluck('id'));
+		$this->assertCount(
+			count($managed_sections),
+			$user->fresh()->managed_sections()->get()
+		);
+
+		foreach($managed_sections as $k => $section){
+			//dump( $k. ': testing update section '.$section->title);
+			$response = $this->put('admin/sections/'.$section->id, [
+				'title' => 'Edited Section',
+			]);
+
+			$edited_section = Section::find($section->id);
+			$this->assertEquals('Edited Section', $edited_section->title);
+		}
+
+	}
+
+	/** @test */
+	public function simple_admin_cannot_edit_sections_he_dont_manage()
+	{
+		factory(Section::class, 2)->create();
+
+		$this->actingAs(factory(User::class)->create(['role' => 'admin']));
+		$user = Auth()->user();
+		$user->managed_sections()->sync(1);
+
+		$unmanaged_section = Section::find(2);
+		$response = $this->put('admin/sections/'.$unmanaged_section->id, [
+				'title' => 'Edited Section',
+		]);
+
+		$response->assertStatus(403);
+		$this->assertNotEquals('Edited Section', $unmanaged_section->title);
+
+
+	}
+
+
 }
