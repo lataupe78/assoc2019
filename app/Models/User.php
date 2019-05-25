@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
+use App\Models\Section;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
+	use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+    	'name', 'email', 'password',
     ];
 
     /**
@@ -25,12 +26,12 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+    	'password', 'remember_token',
     ];
 
     protected $dates = [
-        'email_verified_at',
-        'birth'
+    	'email_verified_at',
+    	'birth'
     ];
 
     /**
@@ -39,22 +40,22 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'birth' => 'datetime:Y-m-d',
+    	'email_verified_at' => 'datetime',
+    	'birth' => 'datetime:Y-m-d',
     ];
 
 
 
     public function isAdmin(){
-        return in_array($this->role, ['admin', 'superadmin']);
+    	return in_array($this->role, ['admin', 'superadmin']);
     }
 
     public function isBasicAdmin(){
-        return $this->role == 'admin';
+    	return $this->role == 'admin';
     }
 
     public function isSuperAdmin(){
-        return $this->role == 'superadmin';
+    	return $this->role == 'superadmin';
     }
 
 
@@ -64,4 +65,34 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->attributes['birth'] = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
     }
     */
+
+
+
+
+    public function canManage(Section $section){
+    	if($this->isSuperAdmin()){
+    		return true;
+    	} else if($this->isBasicAdmin()){
+    		$managed_sections_ids =
+    		$this->managed_sections()->get()->pluck('id')->toArray();
+            //dd($managed_sections_ids);
+    		return in_array($section->id, $managed_sections_ids);
+    	}
+    	return false;
+    }
+
+    public function managed_sections_list(){
+    	if(!$this->isAdmin()){
+    		return [];
+    	}
+    	if($this->isSuperAdmin()){
+    		return Section::pluck('title', 'id');
+    	}
+    	return $this->managed_sections->pluck('title', 'id');
+    }
+
+    public function managed_sections(){
+    	return $this->belongsToMany(Section::class, 'admin_sections', 'user_id', 'section_id')->withPivot('created_at');
+    }
+
 }

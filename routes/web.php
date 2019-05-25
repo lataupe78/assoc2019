@@ -34,6 +34,7 @@ Route::group([
 ], function()
 {
 	Route::get('/', 'DashboardController@index')->name('dashboard');
+	Route::resource('/sections', 'SectionController');
 
 });
 
