@@ -7,6 +7,11 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+
+<p>
+	[![Build Status](https://travis-ci.org/lataupe78/assoc2019.svg?branch=master)](https://travis-ci.org/lataupe78/assoc2019)
+</p>
+
 ## Having fun with Laravel
 
 Personal project for sport association
