@@ -10,11 +10,11 @@ Profil de {{ $user->name }}
 	<div class="card-body">
 		<div class="row">
 			<div class="col-sm-4 text-center">
-				<?php
-				/*
+
+				@if($user->avatar_picture)
 				<img src="{{ url($user->avatar_picture) }}" alt="avatar de {{ $user->name }}" class="img-fluid mx-auto mb-2">
-				*/
-				?>
+				@endif
+
 			</div>
 
 			<div class="col-sm-8">

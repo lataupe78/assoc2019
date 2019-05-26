@@ -7,8 +7,14 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements MustVerifyEmail
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
+
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
+    use HasMediaTrait;
 	use Notifiable;
 
     /**
@@ -65,6 +71,20 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->attributes['birth'] = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
     }
     */
+
+
+
+    public function getAvatarPictureAttribute(){
+        /*return 'storage/images/avatars/'
+        .(($this->avatar)
+            ? $this->avatar
+            : 'default-avatar.png'
+        );
+        */
+
+        return $this->getFirstMediaUrl('avatar', 'thumb')
+        ?: 'storage/images/avatars/default-avatar.png';
+    }
 
 
 

@@ -15,7 +15,6 @@ class UserProfileTest extends TestCase
 	/** @test */
 	public function a_guest_can_view_profile_page_of_a_user()
 	{
-
 		$this->withoutExceptionHandling();
 
 		$member = factory(User::class)->create();
@@ -23,6 +22,16 @@ class UserProfileTest extends TestCase
 		$response = $this->get('/profile/'.$member->name);
 		$response->assertStatus(200);
 		$response->assertSee($member->name);
+	}
+
+	/** @test
+	public function a_user_has_a_default_profile_picture(){
+		$member = factory(User::class)->create();
+
+		$response = $this->get('/profile/'.$member->name);
+		$response->assertStatus(200);
+		$response->assertSee($member->name);
 
 	}
+	 */
 }
