@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Models\Section;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -24,6 +24,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
      */
     protected $fillable = [
     	'name', 'email', 'password',
+        'phone', 'birth',
+        'city', 'postcode', 'street_address',
+        'role', 'is_active'
     ];
 
     /**
@@ -65,12 +68,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     }
 
 
-    /*
+
     public function setBirthAttribute($date)
     {
         $this->attributes['birth'] = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
     }
-    */
+
 
 
 
