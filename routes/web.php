@@ -27,8 +27,6 @@ Route::get('/profile/{username}', 'Front\UserProfileController@show')->name('use
 Route::get('/profile/{username}/edit', 'Front\UserProfileController@edit')->name('users.profile.edit');
 Route::match(['put', 'patch'], '/profile/{username}', 'Front\UserProfileController@update')->name('users.profile.update')->middleware('auth');
 
-
-
 Route::group([
     'middleware' => ['auth', 'admin'],
     'namespace' => 'Admin',
