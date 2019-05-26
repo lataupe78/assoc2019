@@ -112,6 +112,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     }
 
     public function managed_sections(){
+
     	return $this->belongsToMany(Section::class, 'admin_sections', 'user_id', 'section_id')->withPivot('created_at');
     }
 
