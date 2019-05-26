@@ -25,7 +25,9 @@ Route::get('/section/{section}', 'Front\SectionController@show')->name('sections
 // front User routes
 Route::get('/profile/{username}', 'Front\UserProfileController@show')->name('users.profile.show');
 Route::get('/profile/{username}/edit', 'Front\UserProfileController@edit')->name('users.profile.edit');
-Route::match(['put', 'patch'], '/profile/{username}', 'Front\UserProfileController@update')->name('users.profile.update');
+Route::match(['put', 'patch'], '/profile/{username}', 'Front\UserProfileController@update')->name('users.profile.update')->middleware('auth');
+
+
 
 Route::group([
     'middleware' => ['auth', 'admin'],
