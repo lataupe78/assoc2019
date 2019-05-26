@@ -14,3 +14,4 @@ Personal project for sport association
 I'am trying to follow good pratices including
 - code versioning on github repository
 - Test Driven Development
+- Travis CI ( trying to implement.. )
