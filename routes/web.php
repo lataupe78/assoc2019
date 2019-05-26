@@ -20,8 +20,11 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+// front Sections routes
 Route::get('/section/{section}', 'Front\SectionController@show')->name('sections.show');
 
+// front User routes
+Route::get('/profile/{username}', 'Front\UserProfileController@show')->name('users.profile.show');
 
 
 
