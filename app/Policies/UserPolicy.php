@@ -41,7 +41,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        if($user->id === $model->id){
+        if ($user->id === $model->id) {
             return true;
         }
 
@@ -52,7 +52,6 @@ class UserPolicy
         */
 
         return false;
-
     }
 
     /**

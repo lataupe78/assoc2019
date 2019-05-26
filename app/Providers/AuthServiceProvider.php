@@ -2,13 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Section;
 use App\Models\User;
-use App\Policies\SectionPolicy;
+use App\Models\Section;
 use App\Policies\UserPolicy;
-
+use App\Policies\SectionPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {

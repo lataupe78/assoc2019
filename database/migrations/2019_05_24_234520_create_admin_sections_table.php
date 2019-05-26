@@ -14,7 +14,6 @@ class CreateAdminSectionsTable extends Migration
     public function up()
     {
         Schema::create('admin_sections', function (Blueprint $table) {
-
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('section_id');
 
