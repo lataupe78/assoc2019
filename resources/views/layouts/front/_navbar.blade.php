@@ -50,7 +50,6 @@ if(isset($section)){
 				@endif
 
 
-				<?php /*
 				<!-- Authentication Links -->
 				@guest
 				<li class="nav-item {{ Route::is('login') ? ' active' : '' }}">
@@ -93,7 +92,8 @@ if(isset($section)){
 				</div>
 			</li>
 			@endguest
-			*/ ?>
+
+
 		</ul>
 	</div>
 </div>
