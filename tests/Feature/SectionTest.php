@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Section;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Section;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class SectionTest extends TestCase
 {
@@ -16,7 +15,6 @@ class SectionTest extends TestCase
     /** @test */
     public function home_page_show_all_main_sections()
     {
-
         $this->seed('SectionTableSeeder');
 
         $sections = Section::parent()->get()->pluck('title')->toArray();
@@ -24,7 +22,7 @@ class SectionTest extends TestCase
         $response = $this->get('/');
         $response->assertStatus(200);
 
-        foreach($sections as $main_section){
+        foreach ($sections as $main_section) {
             $response->assertSee($main_section);
         }
     }
@@ -32,24 +30,23 @@ class SectionTest extends TestCase
     /** @test */
     public function it_show_section_content_on_when_visit()
     {
-       //$this->withoutExceptionHandling();
+        //$this->withoutExceptionHandling();
 
-        $title = "Pétanque";
+        $title = 'Pétanque';
         $slug = str_slug($title);
         $section = factory(Section::class)->create([
             'title' => $title,
             'slug' => $slug,
-            'description' => 'contenu section pétanque'
+            'description' => 'contenu section pétanque',
         ]);
 
         //dump($section);
 
-        $response = $this->get('/section/' . $slug);
+        $response = $this->get('/section/'.$slug);
 
-            $response->assertStatus(200);
+        $response->assertStatus(200);
 
-             $response->assertSee($section->title);
-             $response->assertSee($section->description);
-
+        $response->assertSee($section->title);
+        $response->assertSee($section->description);
     }
 }

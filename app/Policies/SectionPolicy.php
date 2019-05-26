@@ -2,9 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Section;
 use App\Models\User;
-
+use App\Models\Section;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SectionPolicy
@@ -30,5 +29,4 @@ class SectionPolicy
     {
         return $user->canManage($section);
     }
-
 }

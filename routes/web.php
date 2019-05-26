@@ -19,7 +19,6 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
 // front Sections routes
 Route::get('/section/{section}', 'Front\SectionController@show')->name('sections.show');
 
@@ -28,22 +27,14 @@ Route::get('/profile/{username}', 'Front\UserProfileController@show')->name('use
 Route::get('/profile/{username}/edit', 'Front\UserProfileController@edit')->name('users.profile.edit');
 Route::match(['put', 'patch'], '/profile/{username}', 'Front\UserProfileController@update')->name('users.profile.update');
 
-
-
-
 Route::group([
-	'middleware' => ['auth', 'admin'],
-	'namespace' => 'Admin',
-	'prefix' => 'admin',
-	'as' => 'admin.'
-], function()
-{
-	Route::get('/', 'DashboardController@index')->name('dashboard');
+    'middleware' => ['auth', 'admin'],
+    'namespace' => 'Admin',
+    'prefix' => 'admin',
+    'as' => 'admin.',
+], function () {
+    Route::get('/', 'DashboardController@index')->name('dashboard');
 
-	Route::get('/sections', 'SectionController@index')->name('sections.index');
-	Route::put('/sections/{id}', 'SectionController@update')->name('sections.update');
-
+    Route::get('/sections', 'SectionController@index')->name('sections.index');
+    Route::put('/sections/{id}', 'SectionController@update')->name('sections.update');
 });
-
-
-

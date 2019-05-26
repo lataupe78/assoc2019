@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Models\Section;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SectionController extends Controller
 {
-
-
- 	public function show(Section $section){
- 		return view('front.sections.show', [
- 			'section' => $section
- 		]);
- 	}
+    public function show(Section $section)
+    {
+        return view('front.sections.show', [
+            'section' => $section,
+        ]);
+    }
 }

@@ -13,26 +13,26 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-    	Schema::create('users', function (Blueprint $table) {
-    		$table->bigIncrements('id');
-    		$table->string('name');
-    		$table->string('email')->unique();
-    		$table->timestamp('email_verified_at')->nullable();
-    		$table->string('password');
+        Schema::create('users', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
 
-    		$table->boolean('is_active')->nullable()->default(true);
+            $table->boolean('is_active')->nullable()->default(true);
 
-    		$table->date('birth')->nullable();
-    		$table->string('phone')->nullable();
-    		$table->string('city')->nullable();
-    		$table->string('postcode')->nullable();
-    		$table->string('street_address')->nullable();
+            $table->date('birth')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postcode')->nullable();
+            $table->string('street_address')->nullable();
 
-    		$table->enum('role', ['user', 'admin', 'superadmin'])->default('user');
+            $table->enum('role', ['user', 'admin', 'superadmin'])->default('user');
 
-    		$table->rememberToken();
-    		$table->timestamps();
-    	});
+            $table->rememberToken();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -42,6 +42,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-    	Schema::dropIfExists('users');
+        Schema::dropIfExists('users');
     }
 }
