@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-
 use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
+use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -53,9 +52,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'birth' => 'datetime:Y-m-d',
     ];
 
-
-
-    public function scopeActive($query){
+    public function scopeActive($query)
+    {
         return $query->where('is_active', true);
     }
 
@@ -73,9 +71,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     {
         return $this->role == 'superadmin';
     }
-
-
-
 
     public function canManage(Section $section)
     {
@@ -108,17 +103,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $this->belongsToMany(Section::class, 'admin_sections', 'user_id', 'section_id')->withPivot('created_at');
     }
 
-
-
-
-
     public function setBirthAttribute($birth = null)
     {
         $this->attributes['birth'] = $birth
-        ?   Carbon::createFromFormat('d/m/Y', $birth)->format('Y-m-d')
+        ? Carbon::createFromFormat('d/m/Y', $birth)->format('Y-m-d')
         : null;
     }
-
 
     public function registerMediaCollections()
     {
@@ -140,7 +130,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         ->fit(Manipulations::FIT_CROP, 64, 64)
         ->width(64)
         ->height(64);
-
     }
 
     public function getAvatarPictureAttribute()
@@ -149,10 +138,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         ?: 'storage/images/avatars/default-avatar.png';
     }
 
-   public function getAvatarThumbAttribute()
+    public function getAvatarThumbAttribute()
     {
         return $this->getFirstMediaUrl('avatar', 'thumb-xs')
         ?: 'storage/images/avatars/default-avatar.png';
     }
-
 }

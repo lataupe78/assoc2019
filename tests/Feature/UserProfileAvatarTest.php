@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserProfileAvatarTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function datas(){
+    private function datas()
+    {
         return [
             'name' => '',
             'city' => '',
@@ -24,14 +24,14 @@ class UserProfileAvatarTest extends TestCase
     }
 
     /** @test */
-    public function invalid_avatar_file_is_rejected(){
+    public function invalid_avatar_file_is_rejected()
+    {
         //$this->withoutExceptionHandling();
         $this->signIn();
 
         $this->put('profile/'.auth()->user()->name,
             array_merge($this->datas(), ['avatar_file' => 'not_an_image'])
         )->assertSessionHasErrors('avatar_file');
-
     }
 
     /** @test */
@@ -44,13 +44,12 @@ class UserProfileAvatarTest extends TestCase
         $this->put('profile/'.auth()->user()->name,
             [
                 'name' => auth()->user()->name,
-                'avatar_file' => UploadedFile::fake()->image('avatar-fake.jpg', 256, 256)
+                'avatar_file' => UploadedFile::fake()->image('avatar-fake.jpg', 256, 256),
             ]);
 
         //dd($this->app['session.store']);
         //dd(Storage::disk('public')->files());
 
         Storage::disk('public')->assertExists('/images/avatars/1/avatar.jpg');
-
     }
 }
