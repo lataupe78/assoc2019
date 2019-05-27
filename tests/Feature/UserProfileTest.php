@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class UserProfileTest extends TestCase
 {
@@ -35,10 +37,10 @@ class UserProfileTest extends TestCase
 	public function a_guest_can_not_update_profile_page_of_a_user()
 	{
 
-		$this->withoutExceptionHandling();
 		$member = factory(User::class)->create();
 		$this->put('profile/'.$member->name, $this->datas())
-		->assertStatus(401);
+		->assertStatus(302)
+        ->assertRedirect('/login');
 
 	}
 
@@ -61,20 +63,17 @@ class UserProfileTest extends TestCase
 	/** @test */
 	public function a_user_can_edit_his_own_profile()
 	{
-        //public function a_user_cannot_edit_profile_of_others_users(){
-
 		$this->withoutExceptionHandling();
 
-		$member = factory(User::class)->create();
-        //$member1 = factory(User::class)->create();
-        //$member2 = factory(User::class)->create();
-        //$this->actingAs($member2);
+		$this->signIn();
 
-		$this->put('profile/'.$member->name, $this->datas());
+        $member= auth()->user();
+        $this->put('profile/'.$member->name,
+            $this->datas()
+        );
+        $member = User::find($member->id);
+        //dd($member);
 
-        //dump($member->fresh());
-        //// User::find($member->id)->fresh()
-		$member = $member->fresh();
 		$this->assertEquals('TESTVILLE', $member->city);
 		$this->assertEquals('TEST STREET', $member->street_address);
 		$this->assertEquals('TEST PHONE', $member->phone);
@@ -82,8 +81,6 @@ class UserProfileTest extends TestCase
 		$this->assertEquals('28/02/1978', $member->birth->format('d/m/Y'));
 	}
 
-	/** @test */
-	public function user_can_change_his_avatar()
-	{
-	}
+
+
 }

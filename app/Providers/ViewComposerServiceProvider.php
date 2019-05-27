@@ -49,7 +49,7 @@ class ViewComposerServiceProvider extends ServiceProvider
 
         // récupère la liste des admins ( pour dev )
         view()->composer(
-            'auth.login',
+            'layouts.partials._list_admins',
             "App\Http\ViewComposers\ListAdminsViewComposer"
         );
     }

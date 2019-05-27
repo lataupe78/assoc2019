@@ -15,34 +15,35 @@ Profil de {{ $user->name }}
 				<img src="{{ url($user->avatar_picture) }}" alt="avatar de {{ $user->name }}" class="img-fluid mx-auto mb-2">
 				@endif
 
-
-
 			</div>
 
 			<div class="col-sm-8">
 				<div class="card-text">
-				<h1 class="card-title">{{ $user->name }}</h1>
-				@if($user->isAdmin())
-				<p>
-					@forelse($user->managed_sections as $section)
-					<span class="badge badge-info">{{ $section->title }}</span>
-					@empty
-					@endforelse
-				</p>
-				@endif
+					<h1 class="card-title">{{ $user->name }}</h1>
+					@if($user->isAdmin())
+					<p>
+						@forelse($user->managed_sections as $section)
+						<span class="badge badge-info">{{ $section->title }}</span>
+						@empty
+						@endforelse
+					</p>
+					@endif
 
-				<p class="text-muted">Membre depuis {{ ($user->email_verified_at)
-					? $user->email_verified_at->diffForHumans()
-				: '' }}</p>
+					<p class="text-muted">Membre depuis {{ ($user->email_verified_at)
+						? $user->email_verified_at->diffForHumans()
+					: '' }}</p>
 
 
-				@can('update', $user)
+					@can('update', $user)
 					<a href="{{ route('users.profile.edit', ['username' => $user->name]) }}" class="btn btn-primary my-4">Editer le profil</a>
-				@endcan
+					@endcan
 
-				@include('front.profile._details', ['user' => $user])
+					@include('front.profile._details', ['user' => $user])
+				</div>
 			</div>
-			</div>
+		</div>
+		<div class="card-footer">
+			@include('layouts.partials._list_admins')
 		</div>
 	</div>
 </div>

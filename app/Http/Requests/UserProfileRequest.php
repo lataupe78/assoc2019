@@ -13,7 +13,7 @@ class UserProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+    	return true;
     }
 
     /**
@@ -23,22 +23,24 @@ class UserProfileRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => ['sometimes', 'required', 'min:3'],
-            'avatar_file' => ['sometimes', 'image', 'dimensions:min_width=64,min_height=64'],
+    	return [
+    		'name' => ['sometimes', 'required', 'min:3'],
 
-            'birth' => [
-                'sometimes',
-                'date_format:d/m/Y',
-                //'before:'.date('Y-m-d')
-            ],
-            'phone' => '',
-            'city' => '',
-            'postcode' => '',
-            'street_address' => '',
+    		'avatar_file' => ['nullable', 'image', 'dimensions:min_width=64,min_height=64'],
 
-            'password' => ['sometimes', 'string', 'min:8', 'confirmed'],
+    		'birth' => [
+    			'nullable',
+    			'date_format:d/m/Y',
+    			'before:'.date('Y-m-d')
+    		],
 
-        ];
+    		'phone' => '',
+    		'city' => '',
+    		'postcode' => '',
+    		'street_address' => '',
+
+    		'password' => ['sometimes', 'string', 'min:8', 'confirmed'],
+
+    	];
     }
 }

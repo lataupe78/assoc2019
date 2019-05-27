@@ -14,7 +14,13 @@ $list_admins = $list_admins ?? [];
 				<div class="list-group list-group-flush">
 					@forelse($list_admins as $admin)
 					<div class="list-group-item d-sm-flex flex-wrap align-items-center pt-0 pb-1">
-						<p class="my-0">{{ $admin->email }}</p>
+						<p class="my-0">
+							@if($admin->avatar_thumb)
+						<img src="{{ url($admin->avatar_thumb) }}" alt="avatar de {{ $admin->name }}" style="max-height:40px" class="avatar-sm img-fluid mr-1 rounded-circle">
+						@endif
+
+							<a href="{{ route('users.profile.show', $admin->name) }}">{{ $admin->email }}</a>
+						</p>
 						<div class="d-block ml-sm-auto">
 							@if($admin->role === 'superadmin')
 							<span class="badge badge-success">SuperAdmin</span>
@@ -23,6 +29,8 @@ $list_admins = $list_admins ?? [];
 							<span class="badge badge-primary">{{ $section->title }}</span>
 							@endforeach
 							@endif
+
+							<button class="btn btn-success btn-sm ml-1 js-btn-login" data-email="{{ $admin->email }}">Login</button>
 						</div>
 					</div>
 					@empty
@@ -36,3 +44,25 @@ $list_admins = $list_admins ?? [];
 
 	</div>
 </div>
+
+@section('scripts_bottom')
+
+<script>
+	let btns_login = document.querySelectorAll('.js-btn-login')
+	let inputEmail = document.querySelector('#email')
+	let inputPassword = document.querySelector('#password')
+	if(inputPassword && inputEmail){
+		btns_login.forEach(function (btn, index) {
+			btn.addEventListener('click', function(event){
+			//event.preventDefault();
+			event.target.style = 'border:4px solid red'
+			//alert(event.target.dataset.email)
+			inputEmail.value = event.target.dataset.email
+			inputPassword.value = 'password'
+
+		})
+		});
+
+	}
+</script>
+@endsection

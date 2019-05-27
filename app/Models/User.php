@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Notifications\Notifiable;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -50,6 +53,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'birth' => 'datetime:Y-m-d',
     ];
 
+
+
+    public function scopeActive($query){
+        return $query->where('is_active', true);
+    }
+
     public function isAdmin()
     {
         return in_array($this->role, ['admin', 'superadmin']);
@@ -65,23 +74,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $this->role == 'superadmin';
     }
 
-    public function setBirthAttribute($date)
-    {
-        $this->attributes['birth'] = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
-    }
 
-    public function getAvatarPictureAttribute()
-    {
-        /*return 'storage/images/avatars/'
-        .(($this->avatar)
-            ? $this->avatar
-            : 'default-avatar.png'
-        );
-        */
 
-        return $this->getFirstMediaUrl('avatar', 'thumb')
-        ?: 'storage/images/avatars/default-avatar.png';
-    }
 
     public function canManage(Section $section)
     {
@@ -113,4 +107,52 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     {
         return $this->belongsToMany(Section::class, 'admin_sections', 'user_id', 'section_id')->withPivot('created_at');
     }
+
+
+
+
+
+    public function setBirthAttribute($birth = null)
+    {
+        $this->attributes['birth'] = $birth
+        ?   Carbon::createFromFormat('d/m/Y', $birth)->format('Y-m-d')
+        : null;
+    }
+
+
+    public function registerMediaCollections()
+    {
+        $this
+        ->addMediaCollection('avatar')
+           ->singleFile();
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        //$conversion =
+        $this->addMediaConversion('thumb')
+        ->fit(Manipulations::FIT_CROP, 256, 256)
+        ->width(256)
+        ->height(256);
+
+        //$conversion =
+        $this->addMediaConversion('thumb-xs')
+        ->fit(Manipulations::FIT_CROP, 64, 64)
+        ->width(64)
+        ->height(64);
+
+    }
+
+    public function getAvatarPictureAttribute()
+    {
+        return $this->getFirstMediaUrl('avatar', 'thumb')
+        ?: 'storage/images/avatars/default-avatar.png';
+    }
+
+   public function getAvatarThumbAttribute()
+    {
+        return $this->getFirstMediaUrl('avatar', 'thumb-xs')
+        ?: 'storage/images/avatars/default-avatar.png';
+    }
+
 }

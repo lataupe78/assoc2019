@@ -63,8 +63,8 @@ if(isset($section)){
 				@else
 				<li class="nav-item dropdown">
 					<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						@if(auth()->user()->avatar_picture)
-						<img src="{{ url(auth()->user()->avatar_picture) }}" alt="avatar de {{ auth()->user()->name }}" style="max-height:40px" class="avatar-sm img-fluid mr-1 rounded-circle">
+						@if(auth()->user()->avatar_thumb)
+						<img src="{{ url(auth()->user()->avatar_thumb) }}" alt="avatar de {{ auth()->user()->name }}" style="max-height:40px" class="avatar-sm img-fluid mr-1 rounded-circle">
 						@endif
 						{{ Auth::user()->name }}
 						<span class="caret"></span>
