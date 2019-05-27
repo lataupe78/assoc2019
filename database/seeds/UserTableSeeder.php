@@ -34,9 +34,8 @@ class UserTableSeeder extends Seeder
 
         // et ajoute 2 - 3 sections à un admin pour test
         $admin1 = User::find(2);
-        $admin1->managed_sections()->attach([4,5,6]);
+        $admin1->managed_sections()->attach([4, 5, 6]);
         $admin2 = User::find(4);
-        $admin2->managed_sections()->attach([6,7,8]);
-
+        $admin2->managed_sections()->attach([6, 7, 8]);
     }
 }
