@@ -10,6 +10,7 @@ class CustomPathGenerator implements PathGenerator
 {
     public function getPath(Media $media) : string
     {
+
         /*
         dump(get_class($media));
         dump($media instanceof User);
@@ -26,8 +27,9 @@ class CustomPathGenerator implements PathGenerator
             return 'products/' . $media->id;
         }
         */
+
         if ($media->model_type === 'App\Models\User') {
-            return 'images/avatars/'.$media->id.'/';
+            return 'images/avatars/'.md5($media->model_id).'/';
         }
 
         return 'images/'.$media->id.'/';

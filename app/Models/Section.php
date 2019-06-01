@@ -13,6 +13,18 @@ class Section extends Model
         return 'slug';
     }
 
+    public function admins(){
+        return $this->belongsToMany(User::class, 'admin_sections');
+    }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+
+    public function recent_posts(){
+        return $this->posts()->orderBy('published_at', 'desc')->limit(3);
+    }
+
     public function scopeParent($query)
     {
         return $query
@@ -40,4 +52,7 @@ class Section extends Model
             'slug' => $slug,
         ]);
     }
+
+
+
 }

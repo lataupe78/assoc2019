@@ -23,9 +23,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/section/{section}', 'Front\SectionController@show')->name('sections.show');
 
 // front User routes
-Route::get('/profile/{username}', 'Front\UserProfileController@show')->name('users.profile.show');
-Route::get('/profile/{username}/edit', 'Front\UserProfileController@edit')->name('users.profile.edit');
-Route::match(['put', 'patch'], '/profile/{username}', 'Front\UserProfileController@update')->name('users.profile.update')->middleware('auth');
+Route::get('/profile/{user}', 'Front\UserProfileController@show')->name('users.profile.show');
+
+Route::get('/profile/{user}/edit', 'Front\UserProfileController@edit')->name('users.profile.edit');
+Route::match(['put', 'patch'], '/profile/{user}', 'Front\UserProfileController@update')->name('users.profile.update')->middleware('auth');
+
 
 Route::group([
     'middleware' => ['auth', 'admin'],
@@ -38,3 +40,6 @@ Route::group([
     Route::get('/sections', 'SectionController@index')->name('sections.index');
     Route::put('/sections/{id}', 'SectionController@update')->name('sections.update');
 });
+
+
+Route::post('/avatar', 'Api\AvatarController@store');

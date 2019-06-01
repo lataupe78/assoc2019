@@ -14,10 +14,13 @@ $list_admins = $list_admins ?? [];
 				<div class="list-group list-group-flush">
 					@forelse($list_admins as $admin)
 					<div class="list-group-item d-sm-flex flex-wrap align-items-center pt-0 pb-1">
+
 						<p class="my-0">
-							@if($admin->avatar_thumb)
+						<?php /*
+						@if($admin->avatar_thumb)
 						<img src="{{ url($admin->avatar_thumb) }}" alt="avatar de {{ $admin->name }}" style="max-height:40px" class="avatar-sm img-fluid mr-1 rounded-circle">
 						@endif
+						*/ ?>
 
 							<a href="{{ route('users.profile.show', $admin->name) }}">{{ $admin->email }}</a>
 						</p>

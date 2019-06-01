@@ -2,10 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Validation\ValidationException;
+use Spatie\MediaLibrary\Models\Media;
+use Tests\TestCase;
 
 class UserProfileAvatarTest extends TestCase
 {
@@ -23,33 +26,84 @@ class UserProfileAvatarTest extends TestCase
         ];
     }
 
+
+    private function dumpStorage($disk = 'public', $path = 'public/images'){
+        $directories = Storage::disk($disk)->allDirectories($path);
+        $files = Storage::disk($disk)->allFiles($path);
+        dump($directories);
+        dump($files);
+    }
+
+
+
     /** @test */
-    public function invalid_avatar_file_is_rejected()
+    public function valid_image_file_must_be_provided()
     {
         //$this->withoutExceptionHandling();
         $this->signIn();
-
-        $this->put('profile/'.auth()->user()->name,
-            array_merge($this->datas(), ['avatar_file' => 'not_an_image'])
+        $response = $this->put('profile/'.auth()->user()->name,
+            array_merge($this->datas(), [
+                'name' => auth()->user()->name,
+                'avatar_file' => 'not_an_image'
+            ])
         )->assertSessionHasErrors('avatar_file');
+        //dd(session()->all('errors'));
     }
+
+
+    /** @test */
+    public function too_small_image_file_is_rejected()
+    {
+        //$this->withoutExceptionHandling();
+        $this->signIn();
+        Storage::fake('public');
+
+        $this->put('profile/'.auth()->user()->name, [
+                'avatar_file' => UploadedFile::fake()->image('avatar-fake.jpg', 32, 32),
+            ])->assertSessionHasErrors('avatar_file');
+
+        //dump(session()->all('errors'));
+        //$this->dumpStorage('public');
+
+        Storage::disk('public')->assertMissing('/images/avatars/1/avatar.jpg');
+    }
+
 
     /** @test */
     public function a_valid_avatar_must_be_provided()
     {
-        //$this->withoutExceptionHandling();
-        $this->signIn();
-
         Storage::fake('public');
-        $this->put('profile/'.auth()->user()->name,
+
+        // Make sure fake public is empty:
+        $directories = Storage::disk('public')->allDirectories();
+        $files = Storage::disk('public')->allFiles();
+        $this->assertEquals(0, count($directories));
+        $this->assertEquals(0, count($files));
+
+
+        //$this->withoutExceptionHandling();
+        $user = $this->signIn();
+
+        //$file = new UploadedFile(base_path('tests/Support/testfiles/test.jpg'), 'test.jpg', 'image/jpeg', null, $test=true);
+        // $this->assertEquals(true, file_exists($file));
+
+        $file = UploadedFile::fake()->image('avatar.jpg', 64, 64); // min dimensions restrictions
+
+
+        $this->assertEquals(0, Media::all()->count());
+
+        $response = $this->call('PUT', route('users.profile.update', ['user' => $user]),
             [
-                'name' => auth()->user()->name,
-                'avatar_file' => UploadedFile::fake()->image('avatar-fake.jpg', 256, 256),
+                'avatar_file' => $file
             ]);
 
-        //dd($this->app['session.store']);
-        //dd(Storage::disk('public')->files());
+        //$this->dumpStorage('public', '');
 
-        Storage::disk('public')->assertExists('/images/avatars/1/avatar.jpg');
+        $this->assertEquals(1, Media::all()->count());
+
+        Storage::disk('public')->assertExists('/images/avatars/'.md5($user->id).'/avatar.jpg');
+
     }
+
+
 }

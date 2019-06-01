@@ -25,9 +25,8 @@ class UserProfileTest extends TestCase
     public function a_guest_can_view_profile_page_of_a_user()
     {
         $this->withExceptionHandling();
-
         $member = factory(User::class)->create();
-        $this->get('/profile/'.$member->name)
+        $this->call('GET', route('users.profile.show', ['user' => $member]))
         ->assertStatus(200)
         ->assertSee($member->name);
     }
@@ -35,9 +34,11 @@ class UserProfileTest extends TestCase
     /** @test */
     public function a_guest_can_not_update_profile_page_of_a_user()
     {
+        //$this->withExceptionHandling();
         $member = factory(User::class)->create();
-        $this->put('profile/'.$member->name, $this->datas())
-        ->assertStatus(302)
+        $this->call('PUT', route('users.profile.update', ['user' => $member]),
+            $this->datas()
+        )->assertStatus(302)
         ->assertRedirect('/login');
     }
 
@@ -49,30 +50,31 @@ class UserProfileTest extends TestCase
         $member = factory(User::class)->create();
         $this->actingAs($member);
 
-        $response = $this->get('/profile/'.$member->name);
+        $response = $this->call('GET', route('users.profile.show', ['user' => $member]));
 
         $response->assertStatus(200);
         $response->assertSee('Editer le profil');
     }
+
+
 
     /** @test */
     public function a_user_can_edit_his_own_profile()
     {
         $this->withoutExceptionHandling();
 
-        $this->signIn();
+        $user = $this->signIn();
 
-        $member = auth()->user();
-        $this->put('profile/'.$member->name,
+         $this->call('PUT', route('users.profile.update', ['user' => $user]),
             $this->datas()
         );
-        $member = User::find($member->id);
-        //dd($member);
 
-        $this->assertEquals('TESTVILLE', $member->city);
-        $this->assertEquals('TEST STREET', $member->street_address);
-        $this->assertEquals('TEST PHONE', $member->phone);
-        $this->assertEquals('12345', $member->postcode);
-        $this->assertEquals('28/02/1978', $member->birth->format('d/m/Y'));
+        $user = User::find($user->id)->fresh();
+
+        $this->assertEquals('TESTVILLE', $user->city);
+        $this->assertEquals('TEST STREET', $user->street_address);
+        $this->assertEquals('TEST PHONE', $user->phone);
+        $this->assertEquals('12345', $user->postcode);
+        $this->assertEquals('28/02/1978', $user->birth->format('d/m/Y'));
     }
 }

@@ -9,6 +9,10 @@ class SectionController extends Controller
 {
     public function show(Section $section)
     {
+    	$section->load('recent_posts');
+
+    	//dd($section);
+
         return view('front.sections.show', [
             'section' => $section,
         ]);

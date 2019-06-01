@@ -28,6 +28,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'role', 'is_active',
     ];
 
+
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
     /**
      * The attributes that should be hidden for arrays.
      *
