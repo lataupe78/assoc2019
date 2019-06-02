@@ -3,14 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Section extends Model
 {
+
+    use HasSlug;
+
     public $guarded = [];
 
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+        ->generateSlugsFrom('title')
+        ->saveSlugsTo('slug');
     }
 
     public function admins()

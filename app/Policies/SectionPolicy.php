@@ -10,7 +10,7 @@ class SectionPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user, $ability)
+    public function before($user, $ability)
     {
         if ($user->isSuperAdmin()) {
             return true;

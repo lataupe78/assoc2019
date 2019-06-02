@@ -10,42 +10,34 @@ class SectionTableSeeder extends Seeder
         [
             'title' => 'Aïkido',
             'icon' => 'aikido',
-
         ],
         [
             'title' => 'Badminton',
             'icon' => 'badminton',
-
         ],
         [
             'title' => 'Floorball',
             'icon' => 'floorball',
-
         ],
         [
             'title' => 'Handball',
             'icon' => 'handball',
-
         ],
         [
             'title' => 'Karaté',
             'icon' => 'karate',
-
         ],
         [
             'title' => 'Rugby',
             'icon' => 'rugby',
-
         ],
         [
             'title' => 'Tennis de Table',
             'icon' => 'tennis-de-Table',
-
         ],
         [
             'title' => 'Volleyball',
             'icon' => 'Volley-ball',
-
         ],
     ];
 
