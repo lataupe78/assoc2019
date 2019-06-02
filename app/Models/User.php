@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\Models\Media;
 use Spatie\Sluggable\HasSlug;
+use Spatie\Image\Manipulations;
 use Spatie\Sluggable\SlugOptions;
+use Spatie\MediaLibrary\Models\Media;
+use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -31,12 +31,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'role', 'is_active',
     ];
 
-
     public function getRouteKeyName()
     {
         return 'slug';
     }
-
 
     /**
      * Get the options for generating the slug.
@@ -47,6 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         ->generateSlugsFrom('name')
         ->saveSlugsTo('slug');
     }
+
     /**
      * The attributes that should be hidden for arrays.
      *

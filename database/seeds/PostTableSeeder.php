@@ -17,16 +17,15 @@ class PostTableSeeder extends Seeder
         $sections = Section::all();
         $sections->load('admins');
 
-        foreach($sections as $section){
+        foreach ($sections as $section) {
+            $admins = $section->admins;
 
-        	$admins = $section->admins;
-
-        	factory(Post::class, $faker->numberBetween(3, 6))->create([
-        		'section_id' => $section->id,
-        		'author_id' => ($admins)
-        			?	$faker->randomElement($admins)->id
-        			:	null
-        	]);
+            factory(Post::class, $faker->numberBetween(3, 6))->create([
+                'section_id' => $section->id,
+                'author_id' => ($admins)
+                    ? $faker->randomElement($admins)->id
+                    : null,
+            ]);
         }
     }
 }

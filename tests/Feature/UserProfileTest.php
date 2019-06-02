@@ -56,8 +56,6 @@ class UserProfileTest extends TestCase
         $response->assertSee('Editer le profil');
     }
 
-
-
     /** @test */
     public function a_user_can_edit_his_own_profile()
     {
@@ -65,7 +63,7 @@ class UserProfileTest extends TestCase
 
         $user = $this->signIn();
 
-         $this->call('PUT', route('users.profile.update', ['user' => $user]),
+        $this->call('PUT', route('users.profile.update', ['user' => $user]),
             $this->datas()
         );
 

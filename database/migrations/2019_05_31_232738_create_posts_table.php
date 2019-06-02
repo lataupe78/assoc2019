@@ -22,7 +22,6 @@ class CreatePostsTable extends Migration
             $table->text('content');
             $table->text('excerpt')->nullable();
 
-
             $table->boolean('is_published')->default(0);
 
             $table->dateTime('published_at')->nullable();
@@ -30,7 +29,6 @@ class CreatePostsTable extends Migration
 
             $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
-
         });
     }
 

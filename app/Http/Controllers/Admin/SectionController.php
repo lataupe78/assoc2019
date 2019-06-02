@@ -55,6 +55,7 @@ class SectionController extends Controller
     public function show($id)
     {
         $section = Section::where('id', $id)->firstOrFail();
+
         return view('admin.sections.show', ['section' => $section]);
     }
 
@@ -67,6 +68,7 @@ class SectionController extends Controller
     public function edit($id)
     {
         $section = Section::where('id', $id)->firstOrFail();
+
         return view('admin.sections.edit', ['section' => $section]);
     }
 
@@ -103,6 +105,5 @@ class SectionController extends Controller
         $section = Section::where('id', $id)->firstOrFail();
 
         return $section;
-
     }
 }

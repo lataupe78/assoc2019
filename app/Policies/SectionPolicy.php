@@ -17,18 +17,15 @@ class SectionPolicy
         }
     }
 
-
     public function create(User $user)
     {
         return $user->isSuperAdmin();
     }
 
-
     public function update(User $user, Section $section)
     {
-         return $user->canManage($section);
+        return $user->canManage($section);
     }
-
 
     public function delete(User $user, Section $section)
     {

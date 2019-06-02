@@ -7,35 +7,28 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class MediaTestCase extends BaseTestCase
 {
-	use CreatesApplication;
+    use CreatesApplication;
 
-	public function setUp(): void
-	{
-		$this->loadEnvironmentVariables();
+    public function setUp(): void
+    {
+        $this->loadEnvironmentVariables();
 
-		parent::setUp();
+        parent::setUp();
 
-		$this->setUpTempTestFiles();
-	}
+        $this->setUpTempTestFiles();
+    }
 
+    protected function signIn($user = null)
+    {
+        $user = $user ?: factory(User::class)->create();
 
-	protected function signIn($user = null)
-	{
-		$user = $user ?: factory(User::class)->create();
+        $this->actingAs($user);
 
-		$this->actingAs($user);
+        return $user;
+    }
 
-		return $user;
-	}
-
-
-	public function getTestFilesDirectory($suffix = '')
-	{
-		return $this->getTempDirectory().'/testfiles'.($suffix == '' ? '' : '/'.$suffix);
-
-	}
-
-
-
-
+    public function getTestFilesDirectory($suffix = '')
+    {
+        return $this->getTempDirectory().'/testfiles'.($suffix == '' ? '' : '/'.$suffix);
+    }
 }
