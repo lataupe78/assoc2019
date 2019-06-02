@@ -16,6 +16,7 @@ class ListAdminsViewComposer
                 'managed_sections' => function ($q) {
                     $q->select('id', 'title', 'slug');
                 },
+                'media'
             ])
             ->get()
         );

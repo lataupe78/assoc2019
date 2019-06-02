@@ -15,6 +15,8 @@ class Subscription extends Model
         'annual_price' => 'integer'
     ];
 
+    public $appends = ['id_active'];
+
     public function scopePublished($query)
     {
         return $query
@@ -26,13 +28,19 @@ class Subscription extends Model
     public function scopeActive($query)
     {
     	$now = date("Y-m-d");
+
         return $query
-        ->where([
-            'starts_at' ,'<=', $now
-        ])
-        ->where([
-        	'expires_at', '>=', $now
-        ]);
+        ->whereDate('starts_at' ,'<=', $now)
+        ->whereDate('expires_at', '>=', $now);
+    }
+
+
+    public function getIsActiveAttribute($value){
+        $now = date("Y-m-d");
+        return (
+            $this->starts_at <= $now
+            && $this->expires_at >= $now
+        );
     }
 
     public function scopeForSection($query, Section $section)

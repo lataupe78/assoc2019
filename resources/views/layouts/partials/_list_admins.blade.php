@@ -18,11 +18,14 @@ $aff_login = $aff_login ?? false;
 					<div class="list-group-item d-sm-flex flex-wrap align-items-center pt-0 pb-1 my-0">
 
 
+						{{-- dump($admin->media) --}}
+
+
 
 						@if($admin->avatar_thumb)
 						<img src="{{ url($admin->avatar_thumb) }}" alt="avatar de {{ $admin->name }}" style="max-height:40px" class="avatar-sm img-fluid mr-1 rounded-circle">
-
 						@endif
+
 						<div class="d-inline d-flex flex-column">
 							<strong>{{ $admin->name }}</strong>
 							<a href="{{ route('users.profile.show', ['user' => $admin ]) }}">{{ $admin->email }}</a>

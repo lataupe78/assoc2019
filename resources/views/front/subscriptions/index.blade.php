@@ -24,11 +24,14 @@
 
 				@forelse($subscriptions as $subscription)
 				<div class="list-group-item">
-					<h5>
+					<h5 class="d-flex justify-content-between">
 						<a href="{{ route('subscriptions.show', [
 						'subscription' => $subscription,
 						'section' => $section
 						]) }}">{{ $subscription->title }}</a>
+
+						{{ $subscription->is_active }}
+
 					</h5>
 
 					<dl class="row">

@@ -11,7 +11,7 @@
 
 @section('top-content')
 
-	@include('layouts.front._top-content-jumbotron', [ 'section' => $section ])
+@include('layouts.front._top-content-jumbotron', [ 'section' => $section ])
 
 @endsection
 
@@ -21,11 +21,22 @@
 
 	<div class="col-md-8">
 
-		<div class="card">
+		<div class="card mb-4">
 			<div class="card-body">
-			<h1>{{ $section->title }}</h1>
+				<h1>{{ $section->title }}</h1>
 
-			{{ $section->description }}
+				{{ $section->description }}
+			</div>
+		</div>
+
+		<div class="row">
+
+			<div class="col-sm-4">
+				<div class="card mb-4">
+					<div class="card-body">
+						<h3><a href="{{ route('subscriptions.index', $section) }}">Inscription</a></h3>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

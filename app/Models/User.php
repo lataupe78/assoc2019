@@ -2,22 +2,24 @@
 
 namespace App\Models;
 
+use App\Traits\Admin;
 use Carbon\Carbon;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Image\Manipulations;
-use Spatie\Sluggable\SlugOptions;
-use Spatie\MediaLibrary\Models\Media;
-use Illuminate\Notifications\Notifiable;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     use HasMediaTrait;
     use Notifiable;
     use HasSlug;
+    use Admin;
 
     /**
      * The attributes that are mass assignable.
@@ -75,51 +77,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $query->where('is_active', true);
     }
 
-    public function isAdmin()
-    {
-        return in_array($this->role, ['admin', 'superadmin']);
-    }
-
-    public function isBasicAdmin()
-    {
-        return $this->role == 'admin';
-    }
-
-    public function isSuperAdmin()
-    {
-        return $this->role == 'superadmin';
-    }
-
-    public function canManage(Section $section)
-    {
-        if ($this->isSuperAdmin()) {
-            return true;
-        } elseif ($this->isBasicAdmin()) {
-            $managed_sections_ids =
-            $this->managed_sections()->get()->pluck('id')->toArray();
-            //dd($managed_sections_ids);
-            return in_array($section->id, $managed_sections_ids);
-        }
-
-        return false;
-    }
-
-    public function managed_sections_list()
-    {
-        if (! $this->isAdmin()) {
-            return [];
-        }
-        if ($this->isSuperAdmin()) {
-            return Section::pluck('title', 'id');
-        }
-
-        return $this->managed_sections->pluck('title', 'id');
-    }
-
-    public function managed_sections()
-    {
-        return $this->belongsToMany(Section::class, 'admin_sections', 'user_id', 'section_id')->withPivot('created_at');
-    }
 
     public function setBirthAttribute($birth = null)
     {
@@ -134,6 +91,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         ? Carbon::createFromFormat('Y-m-d', $birth)->format('d/m/Y')
         : null;
     }
+
+
+    // 'attachments' media collection
+    public function avatar()
+    {
+        return $this->media()->where('collection_name', 'avatar');
+    }
+
 
     public function registerMediaCollections()
     {
