@@ -31,7 +31,6 @@ Route::match(['put', 'patch'], '/profile/{user}', 'Front\UserProfileController@u
 Route::get('/section/{section}/posts', 'Front\PostController@index')->name('posts.index');
 Route::get('/section/{section}/posts/{post}', 'Front\PostController@show')->name('posts.show');
 
-
 // admin routes
 Route::group([
     'middleware' => ['auth', 'admin'],
@@ -54,4 +53,3 @@ Route::group([
 
     Route::resource('/events', 'EventController');
 });
-
