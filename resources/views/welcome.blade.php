@@ -14,7 +14,7 @@
 @section('content')
 <div class="row">
 
-	<div class="col-sm-6">
+	<div class="col-sm-4">
 
 		<div class="card mb-5">
 			<div class="card-header">Un petit rappel du git flow basique:</div>
@@ -34,7 +34,20 @@
 
 	</div>
 
-	<div class="col-sm-6">
+	<div class="col-sm-4">
+		<div class="card mb-5">
+			<div class="card-header">Push a new local branch to a remote Git repository and track it too</div>
+			<div class="card-body">
+				<ul>
+					<li>Create a new branch: git checkout -b feature_branch_name.</li>
+					<li>Edit, add and commit your files.</li>
+					<li>Push your branch to the remote repository: git push -u origin feature_branch_name.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-4">
 
 		<div class="card">
 			<div class="card-header"><a href="https://seesparkbox.com/foundry/semantic_commit_messages">Semantic Commit Message</a></div>
