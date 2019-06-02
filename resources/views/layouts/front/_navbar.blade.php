@@ -26,7 +26,7 @@ if(isset($section)){
 	<div class="container d-flex flex-wrap align-items-start">
 		<a class="mr-auto text-center" href="{{ url('/') }}">
 			<div class="logo mx-auto d-none d-md-block">
-				<img src="{{ url('img/home.png') }}" alt="Logo AOBuc">
+				<img src="{{ url('img/home.png') }}" alt="Logo {{ config('app.name', 'Laravel') }}">
 			</div>
 			<p class="h5 text-white text-uppercase mx-auto">{{ config('app.name', 'Laravel') }}</p>
 		</a>
@@ -72,7 +72,7 @@ if(isset($section)){
 
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-						<a class="dropdown-item{{ Route::is('users.profile.show')? ' active' :'' }}" href="{{ route('users.profile.show', ['name' => auth()->user()->name ]) }}">
+						<a class="dropdown-item{{ Route::is('users.profile.show')? ' active' :'' }}" href="{{ route('users.profile.show', auth()->user() ) }}">
 							Profil
 						</a>
 

@@ -32,7 +32,7 @@ class SectionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.sections.create', ['section' => new Section]);
     }
 
     /**
@@ -43,7 +43,7 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->route('admin.sections.index');
     }
 
     /**
@@ -54,7 +54,8 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        //
+        $section = Section::where('id', $id)->firstOrFail();
+        return view('admin.sections.show', ['section' => $section]);
     }
 
     /**
@@ -65,7 +66,8 @@ class SectionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $section = Section::where('id', $id)->firstOrFail();
+        return view('admin.sections.edit', ['section' => $section]);
     }
 
     /**
@@ -85,9 +87,8 @@ class SectionController extends Controller
 
         //$section->update($request->validated());
         //dd($section);
-
         $section->update(['title' => request('title')]);
-        //}
+
         return redirect()->route('admin.sections.index');
     }
 
@@ -99,6 +100,9 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $section = Section::where('id', $id)->firstOrFail();
+
+        return $section;
+
     }
 }

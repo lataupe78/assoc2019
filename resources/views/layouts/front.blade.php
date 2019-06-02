@@ -35,6 +35,7 @@
 			@yield('content')
 		</main>
 	</div>
+
 	<footer class="bg-dark text-white py-5">
 		@yield('top-footer')
 		<div class="container">

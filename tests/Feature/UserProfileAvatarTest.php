@@ -39,50 +39,47 @@ class UserProfileAvatarTest extends TestCase
     /** @test */
     public function valid_image_file_must_be_provided()
     {
-        //$this->withoutExceptionHandling();
-        $this->signIn();
-        $response = $this->put('profile/'.auth()->user()->name,
-            array_merge($this->datas(), [
-                'name' => auth()->user()->name,
-                'avatar_file' => 'not_an_image'
-            ])
-        )->assertSessionHasErrors('avatar_file');
+        // $this->withoutExceptionHandling();
+     $user = $this->signIn();
+     $response = $this->call('PUT', route('users.profile.update', $user), [
+        'avatar_file' => 'not_an_image'
+    ])->assertSessionHasErrors('avatar_file');
         //dd(session()->all('errors'));
-    }
+ }
 
 
-    /** @test */
-    public function too_small_image_file_is_rejected()
-    {
+ /** @test */
+ public function too_small_image_file_is_rejected()
+ {
         //$this->withoutExceptionHandling();
-        $this->signIn();
-        Storage::fake('public');
+    $user = $this->signIn();
+    Storage::fake('public');
 
-        $this->put('profile/'.auth()->user()->name, [
-                'avatar_file' => UploadedFile::fake()->image('avatar-fake.jpg', 32, 32),
-            ])->assertSessionHasErrors('avatar_file');
+    $response = $this->call('PUT', route('users.profile.update', $user), [
+        'avatar_file' => UploadedFile::fake()->image('avatar-fake.jpg', 32, 32),
+    ])->assertSessionHasErrors('avatar_file');
 
         //dump(session()->all('errors'));
         //$this->dumpStorage('public');
 
-        Storage::disk('public')->assertMissing('/images/avatars/1/avatar.jpg');
-    }
+    Storage::disk('public')->assertMissing('/images/avatars/1/avatar.jpg');
+}
 
 
-    /** @test */
-    public function a_valid_avatar_must_be_provided()
-    {
-        Storage::fake('public');
+/** @test */
+public function a_valid_avatar_must_be_provided()
+{
+    Storage::fake('public');
 
         // Make sure fake public is empty:
-        $directories = Storage::disk('public')->allDirectories();
-        $files = Storage::disk('public')->allFiles();
-        $this->assertEquals(0, count($directories));
-        $this->assertEquals(0, count($files));
+    $directories = Storage::disk('public')->allDirectories();
+    $files = Storage::disk('public')->allFiles();
+    $this->assertEquals(0, count($directories));
+    $this->assertEquals(0, count($files));
 
 
         //$this->withoutExceptionHandling();
-        $user = $this->signIn();
+    $user = $this->signIn();
 
         //$file = new UploadedFile(base_path('tests/Support/testfiles/test.jpg'), 'test.jpg', 'image/jpeg', null, $test=true);
         // $this->assertEquals(true, file_exists($file));

@@ -73,7 +73,7 @@
     </div>
 </div>
 
-@include('layouts.partials._list_admins')
+@include('layouts.partials._list_admins', ['aff_login' => true])
 
 
 @endsection

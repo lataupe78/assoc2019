@@ -40,12 +40,12 @@
 					@include('layouts.admin._top-content')
 
 
-					@yield('top-content')
 
 					<main class="container py-4">
 						@include('layouts.partials._alerts')
 						@include('layouts.partials._breadcrumbs')
 
+						@yield('top-content')
 
 						@yield('content')
 
@@ -71,7 +71,7 @@
 		<!-- -->
 	</div>
 
-
+	<script src="{{ asset('js/app.js') }}"></script>
 	@yield('scripts_bottom')
 
 </body>

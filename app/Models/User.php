@@ -3,18 +3,21 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\Models\Media;
-use Illuminate\Notifications\Notifiable;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     use HasMediaTrait;
     use Notifiable;
+    use HasSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'slug', 'email', 'password',
         'phone', 'birth',
         'city', 'postcode', 'street_address',
         'role', 'is_active',
@@ -31,7 +34,18 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
 
     public function getRouteKeyName()
     {
-        return 'name';
+        return 'slug';
+    }
+
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+        ->generateSlugsFrom('name')
+        ->saveSlugsTo('slug');
     }
     /**
      * The attributes that should be hidden for arrays.
@@ -115,11 +129,18 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         : null;
     }
 
+    public function getBirthAttribute($birth = null)
+    {
+        return ($birth != null)
+        ? Carbon::createFromFormat('Y-m-d', $birth)->format('d/m/Y')
+        : null;
+    }
+
     public function registerMediaCollections()
     {
         $this
         ->addMediaCollection('avatar')
-           ->singleFile();
+        ->singleFile();
     }
 
     public function registerMediaConversions(Media $media = null)

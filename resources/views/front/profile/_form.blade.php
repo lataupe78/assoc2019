@@ -5,6 +5,7 @@
 		<input type="text" id="birth" name="birth"
 		class="form-control{{ $errors->has('birth') ? ' is-invalid' : '' }}"
 		value="{{ old('birth', $user->birth) }}"
+		placeholder="{{ __('jj/m/aaaa') }}"
 		>
 		@if ($errors->has('birth'))
 		<div class="invalid-feedback">{{ $errors->first('birth') }}</div>

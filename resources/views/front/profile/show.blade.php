@@ -33,7 +33,7 @@ Profil de {{ $user->name }}
 
 
 					@can('update', $user)
-					<a href="{{ route('users.profile.edit', ['username' => $user->name]) }}" class="btn btn-primary my-4">Editer le profil</a>
+					<a href="{{ route('users.profile.edit', $user) }}" class="btn btn-primary my-4">Editer le profil</a>
 					@endcan
 
 					@include('front.profile._details', ['user' => $user])

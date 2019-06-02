@@ -75,6 +75,6 @@ class UserProfileTest extends TestCase
         $this->assertEquals('TEST STREET', $user->street_address);
         $this->assertEquals('TEST PHONE', $user->phone);
         $this->assertEquals('12345', $user->postcode);
-        $this->assertEquals('28/02/1978', $user->birth->format('d/m/Y'));
+        $this->assertEquals('28/02/1978', $user->birth);
     }
 }

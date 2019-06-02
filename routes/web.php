@@ -28,7 +28,11 @@ Route::get('/profile/{user}', 'Front\UserProfileController@show')->name('users.p
 Route::get('/profile/{user}/edit', 'Front\UserProfileController@edit')->name('users.profile.edit');
 Route::match(['put', 'patch'], '/profile/{user}', 'Front\UserProfileController@update')->name('users.profile.update')->middleware('auth');
 
+Route::get('/section/{section}/posts', 'Front\PostController@index')->name('posts.index');
+Route::get('/section/{section}/posts/{post}', 'Front\PostController@show')->name('posts.show');
 
+
+// admin routes
 Route::group([
     'middleware' => ['auth', 'admin'],
     'namespace' => 'Admin',
@@ -38,8 +42,16 @@ Route::group([
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
     Route::get('/sections', 'SectionController@index')->name('sections.index');
-    Route::put('/sections/{id}', 'SectionController@update')->name('sections.update');
+
+    Route::get('/sections/create', 'SectionController@create')->name('sections.create');
+    Route::post('/sections', 'SectionController@store')->name('sections.store');
+
+    Route::get('/sections/{id}/edit', 'SectionController@edit')->name('sections.edit');
+    Route::match(['put', 'patch'], '/sections/{id}', 'SectionController@update')->name('sections.update');
+
+    Route::get('/sections/{id}', 'SectionController@show')->name('sections.show');
+    Route::delete('/sections/{id}', 'SectionController@destroy')->name('sections.destroy');
+
+    Route::resource('/events', 'EventController');
 });
 
-
-Route::post('/avatar', 'Api\AvatarController@store');

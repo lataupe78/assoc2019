@@ -10,6 +10,10 @@ class Post extends Model
 {
 	public $guarded = [];
 
+	 protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
 	public function scopePublished($query){
 		return $query
 		->where([
